@@ -12,7 +12,7 @@ public class Obstacle extends Entity{
     public Obstacle(String id, Point position,
                     List<PImage> images, int imageIndex)
     {
-        super(images, imageIndex,position);
+        super(id, position, images, imageIndex);
 
     }
 }
