@@ -10,10 +10,18 @@ public class Hatalsky extends MoveEntity{
         super(id,position,images,imageIndex, actionPeriod,animationPeriod);
         this.charger_part_count = charger_part_count;
     }
-    private static Hatalsky getInstance(){
+    public static Hatalsky getInstance(){
         if (hatalsky == null){
             hatalsky = new Hatalsky();
         }
         return hatalsky;
+    }
+    public Point nextPosition(){
+        return getPosition();
+    }
+    public void moveHatalsky(int dx, int dy){
+        int newX = getPosition().x;
+        int newY = getPosition().y;
+        setPosition(new Point(newX, newY));
     }
 }

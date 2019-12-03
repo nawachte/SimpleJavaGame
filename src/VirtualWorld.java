@@ -46,6 +46,7 @@ public final class VirtualWorld
    public WorldModel world;
    public WorldView view;
    public EventScheduler scheduler;
+   public Hatalsky hatalsky = Hatalsky.getInstance();
 
    public long next_time;
 
@@ -109,7 +110,8 @@ public final class VirtualWorld
                dx = 1;
                break;
          }
-         WorldView.shiftView(view, dx, dy);
+//         WorldView.shiftView(view, dx, dy);
+         hatalsky.moveHatalsky(dx,dy);
       }
    }
 
