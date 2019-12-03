@@ -15,12 +15,12 @@ public final class VirtualWorld
 {
    public static final int TIMER_ACTION_PERIOD = 100;
 
-   public static final int VIEW_WIDTH = 640;
-   public static final int VIEW_HEIGHT = 480;
+   public static final int VIEW_WIDTH = 800;
+   public static final int VIEW_HEIGHT = 640;
    public static final int TILE_WIDTH = 32;
    public static final int TILE_HEIGHT = 32;
-   public static final int WORLD_WIDTH_SCALE = 2;
-   public static final int WORLD_HEIGHT_SCALE = 2;
+   public static final int WORLD_WIDTH_SCALE = 1;
+   public static final int WORLD_HEIGHT_SCALE = 1;
 
    public static final int VIEW_COLS = VIEW_WIDTH / TILE_WIDTH;
    public static final int VIEW_ROWS = VIEW_HEIGHT / TILE_HEIGHT;
@@ -46,7 +46,7 @@ public final class VirtualWorld
    public WorldModel world;
    public WorldView view;
    public EventScheduler scheduler;
-   public Hatalsky hatalsky = Hatalsky.getInstance();
+   public Hatalsky hatalsky;
 
    public long next_time;
 
@@ -110,8 +110,7 @@ public final class VirtualWorld
                dx = 1;
                break;
          }
-//         WorldView.shiftView(view, dx, dy);
-         hatalsky.moveHatalsky(dx,dy);
+         Hatalsky.getInstance().moveTo(world, dx, dy, scheduler);
       }
    }
 
@@ -243,11 +242,25 @@ public final class VirtualWorld
                return parseAtlantis(properties, world, imageStore);
             case Sgrass.SGRASS_KEY:
                return parseSgrass(properties, world, imageStore);
+            case Hatalsky.HATALSKY_ID:
+               return parseHatal(properties, world, imageStore);
          }
       }
 
       return false;
    }
+
+   public static boolean parseHatal(String [] properties, WorldModel world,
+                                   ImageStore imageStore) {
+      if (properties.length == Hatalsky.HATALSKY_NUM_PROPERTIES) {
+         Point pt = new Point(Integer.parseInt(properties[2]),
+                 Integer.parseInt(properties[3]));
+         Hatalsky hatalsky = Hatalsky.getHatalsky(imageStore, pt);
+         world.tryAddEntity(hatalsky);
+      }
+      return properties.length == Hatalsky.HATALSKY_NUM_PROPERTIES;
+   }
+
 
    public static boolean parseBackground(String [] properties,
                                          WorldModel world, ImageStore imageStore)
@@ -263,6 +276,7 @@ public final class VirtualWorld
 
       return properties.length == BGND_NUM_PROPERTIES;
    }
+
 
    public static boolean parseOcto(String [] properties, WorldModel world,
                                    ImageStore imageStore)
@@ -351,5 +365,6 @@ public final class VirtualWorld
    public static final int COLOR_MASK = 0xffffff;
    public static final int KEYED_IMAGE_MIN = 5;
    public static final int PROPERTY_KEY = 0;
+
 
 }
